@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Product Management</title>
+    <style>
+        body {
+            margin: 20px;
+        }
+
+        #productList {
+            margin-top: 20px;
+        }
+
+        .product {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Product Management System</h1>
+
+    <label for="numOfProducts">Enter the number of products you want to add:</label>
+    <input type="number" id="numOfProducts">
+    <button onclick="addProducts()">Add Products</button>
+
+    <div id="productList"></div>
+
+    <button onclick="deleteProduct()">Delete Product</button>
+
+    <script>
+        class Product {
+            constructor() {
+                this.name = "";
+                this.price = 0.0;
+                this.description = "";
+            }
+
+            setName(newName) {
+                this.name = newName;
+            }
+
+            setPrice(newPrice) {
+                this.price = newPrice;
+            }
+
+            setDescription(newDesc) {
+                this.description = newDesc;
+            }
+        }
+
+        var products = [];
+
+        function addProducts() {
+            var numOfProducts = document.getElementById('numOfProducts').value;
+
+            for (var i = 0; i < numOfProducts; i++) {
+                var name = prompt("Enter product name:");
+                var price = parseFloat(prompt("Enter product price:"));
+                var description = prompt("Enter product description:");
+
+                var newProduct = new Product();
+                newProduct.setName(name);
+                newProduct.setPrice(price);
+                newProduct.setDescription(description);
+
+                products.push(newProduct);
+            }
+
+            displayProducts();
+        }
+
+        function deleteProduct() {
+            var productToDelete = prompt("Enter the name of the product you want to delete:");
+
+            for (var i = 0; i < products.length; i++) {
+                if (products[i].name === productToDelete) {
+                    products.splice(i, 1);
+                    alert("Product deleted successfully!");
+                    displayProducts();
+                    return;
+                }
+            }
+
+            alert("Product not found!");
+        }
+
+        function displayProducts() {
+            var productListDiv = document.getElementById('productList');
+            productListDiv.innerHTML = "";
+
+            products.forEach(product => {
+                var productDiv = document.createElement('div');
+                productDiv.classList.add('product');
+
+                productDiv.innerHTML = `
+                    <p><strong>Name:</strong> ${product.name}</p>
+                    <p><strong>Price:</strong> ${product.price.toFixed(2)}</p>
+                    <p><strong>Description:</strong> ${product.description}</p>
+                `;
+
+                productListDiv.appendChild(productDiv);
+            });
+        }
+    </script>
+</body>
+
+</html>
